@@ -5,7 +5,7 @@ import "nprogress/nprogress.css"
 const requests = axios.create({
     //配置对象
     //基本路径，发送请求路径会出想=先api
-    baseURL:'/api',
+    baseURL:'/mock',
     timeout:5000,
 });
 

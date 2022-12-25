@@ -161,7 +161,7 @@ export default {
                 .item {
                     h3 {
                         cursor: pointer;
-                        line-height: 30px;
+                        line-height: 27px;
                         font-size: 14px;
                         font-weight: 400;
                         overflow: hidden;
@@ -186,6 +186,8 @@ export default {
                         display: none;
                         position: absolute;
                         width: 734px;
+                        height: 100%;
+                        overflow-y: auto;
                         min-height: 460px;
                         background: #f7f7f7;
                         left: 210px;

@@ -4,6 +4,9 @@ import App from './App.vue'
 //三级联动组件---全局组件
 import TypeNav from '@/components/TypeNav'
 Vue.component(TypeNav.name,TypeNav)
+//轮播图组件
+import CarouseL from '@/components/Carousel'
+Vue.component(CarouseL.name,CarouseL)
 
 //引入路由
 import router from '@/router'
@@ -13,6 +16,12 @@ Vue.config.productionTip = false;
 
 //引入仓库
 import store from '@/store'
+
+//引入mockServe.js
+import '@/mock/mockServe'
+
+//引入swiper样式
+import 'swiper/css/swiper.css'
 
 new Vue({
   router,
