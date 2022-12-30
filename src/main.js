@@ -7,6 +7,9 @@ Vue.component(TypeNav.name,TypeNav)
 //轮播图组件
 import CarouseL from '@/components/Carousel'
 Vue.component(CarouseL.name,CarouseL)
+//分页器组件
+import PaginatioN from '@/components/Pagination'
+Vue.component(PaginatioN.name,PaginatioN)
 
 //引入路由
 import router from '@/router'
@@ -24,6 +27,9 @@ import '@/mock/mockServe'
 import 'swiper/css/swiper.css'
 
 new Vue({
+  beforeCreate(){
+    Vue.prototype.$bus=this
+  },
   router,
   store,
   render: h => h(App),

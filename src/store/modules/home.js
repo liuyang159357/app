@@ -39,7 +39,7 @@ export default {
         },
         async getFloorList(store) {
             let result = await reqFloorList()
-            console.log(result);
+            // console.log(result);
             if (result.code == 200) {
                 store.commit("GETFLOORLIST", result.data)
             }

@@ -33,7 +33,8 @@
                 </h1>
                 <div class="searchArea">
                     <form action="###" class="searchForm">
-                        <input type="text" id="autocomplete" class="input-error input-xxlarge" v-model="keyword" />
+                        <input @keydown.enter="goSearch" type="text" id="autocomplete" class="input-error input-xxlarge"
+                            v-model="keyword" />
                         <button class="sui-btn btn-xlarge btn-danger" type="button" @click="goSearch">搜索</button>
                     </form>
                 </div>
@@ -54,17 +55,24 @@ export default {
     },
     methods: {
         goSearch() {
-            let result = this.$router.push(
-                {
-                    name: "search",
-                    params: {
-                        keyword: this.keyword || undefined
-                    },
-                    query: this.$route.query ? this.$route.query : undefined
-                })
-            console.log(result);
+            if (this.keyword.trim()) {
+                this.$router.push(
+                    {
+                        name: "search",
+                        params: {
+                            keyword: this.keyword || undefined
+                        },
+                        query: this.$route.query ? this.$route.query : undefined
+                    })
+            }
+
         }
     },
+    mounted(){
+        this.$bus.$on('clearKeyword',()=>{
+            this.keyword=''
+        })
+    }
 }
 </script>
 

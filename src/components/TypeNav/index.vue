@@ -102,7 +102,6 @@ export default {
                 }
                 location.params=this.$route.params||undefined
                 location.query = query;
-                console.log(location);
                 //跳转search页面
                 this.$router.push(location)
              
@@ -152,7 +151,7 @@ export default {
             position: absolute;
             background: #fafafa;
             z-index: 999;
-
+      
             .all-sort-list2 {
                 a {
                     cursor: pointer;
@@ -183,7 +182,7 @@ export default {
                     }
 
                     .item-list {
-                        display: none;
+                        // display: none;
                         position: absolute;
                         width: 734px;
                         height: 100%;
@@ -258,6 +257,7 @@ export default {
         }
         .sort-leave-active,
         .sort-enter-active {
+            overflow: hidden;
             transition: all 0.3s ease-in-out;
         }
     }

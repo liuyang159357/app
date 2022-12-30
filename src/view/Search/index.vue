@@ -11,38 +11,40 @@
             </li>
           </ul>
           <ul class="fl sui-tag">
-            <li class="with-x">手机</li>
-            <li class="with-x">iphone<i>×</i></li>
-            <li class="with-x">华为<i>×</i></li>
-            <li class="with-x">OPPO<i>×</i></li>
+            <!-- 分类面包屑 -->
+            <li class="with-x" v-if="searchParams.categoryName">{{ searchParams.categoryName }}<i
+                @click="removeCategoryName">×</i></li>
+            <!-- 关键字的面包屑 -->
+            <li v-if="searchParams.keyword" class="with-x">{{ searchParams.keyword }}<i @click="removekeyword">×</i>
+            </li>
+            <!-- 品牌信息 -->
+            <li v-if="searchParams.trademark" class="with-x">{{ searchParams.trademark.split(":")[1] }}
+              <i @click="removetrademark">×</i>
+            </li>
+            <!-- 平台的售卖的属性展示 -->
+            <li class="with-x" v-for="item, index in searchParams.props" :key="index">{{ item.split(':')[1] }}
+              <i @click="removeAttr(index)">×</i>
+            </li>
           </ul>
         </div>
 
         <!--selector-->
-        <SearchSelector />
+        <SearchSelector @trademarkInfo="trademarkInfo" @propsInfo="propsInfo" />
 
         <!--details-->
         <div class="details clearfix">
           <div class="sui-navbar">
             <div class="navbar-inner filter">
               <ul class="sui-nav">
-                <li class="active">
-                  <a href="#">综合</a>
+                <li :class="{ active: searchParams.order.includes(1) }" @click="changeOrder('1')">
+                  <a>综合 &ensp;<span class="iconfont"
+                      :class="{ 'icon-long-arrow-down': !isAsc, 'icon-long-arrow-up': isAsc }"
+                      v-show="searchParams.order.includes(1)"></span></a>
                 </li>
-                <li>
-                  <a href="#">销量</a>
-                </li>
-                <li>
-                  <a href="#">新品</a>
-                </li>
-                <li>
-                  <a href="#">评价</a>
-                </li>
-                <li>
-                  <a href="#">价格⬆</a>
-                </li>
-                <li>
-                  <a href="#">价格⬇</a>
+                <li :class="{ active: searchParams.order.includes(2) }" @click="changeOrder('2')">
+                  <a>价格 &ensp;<span class="iconfont"
+                      :class="{ 'icon-long-arrow-down': !isAsc, 'icon-long-arrow-up': isAsc }"
+                      v-show="searchParams.order.includes(2)"></span></a>
                 </li>
               </ul>
             </div>
@@ -61,8 +63,8 @@
                     </strong>
                   </div>
                   <div class="attr">
-                    <a target="_blank" href="item.html"
-                      title="促销信息，下单即赠送三个月CIBN视频会员卡！【小米电视新品4A 58 火爆预约中】">{{ item.title }}</a>
+                    <a target="_blank" href="item.html" title="促销信息，下单即赠送三个月CIBN视频会员卡！【小米电视新品4A 58 火爆预约中】">{{ item.title
+}}</a>
                   </div>
                   <div class="commit">
                     <i class="command">已有<span>2000</span>人评价</i>
@@ -76,35 +78,8 @@
 
             </ul>
           </div>
-          <div class="fr page">
-            <div class="sui-pagination clearfix">
-              <ul>
-                <li class="prev disabled">
-                  <a href="#">«上一页</a>
-                </li>
-                <li class="active">
-                  <a href="#">1</a>
-                </li>
-                <li>
-                  <a href="#">2</a>
-                </li>
-                <li>
-                  <a href="#">3</a>
-                </li>
-                <li>
-                  <a href="#">4</a>
-                </li>
-                <li>
-                  <a href="#">5</a>
-                </li>
-                <li class="dotted"><span>...</span></li>
-                <li class="next">
-                  <a href="#">下一页»</a>
-                </li>
-              </ul>
-              <div><span>共10页&nbsp;</span></div>
-            </div>
-          </div>
+          <PaginatioN @getPageNo="getPageNo" :pageNo="searchParams.pageNo" :pageSize="searchParams.pageSize"
+            :total="searchInfo.total" :continues="5" />
         </div>
       </div>
     </div>
@@ -124,7 +99,7 @@ export default {
         category3Id: "",
         categoryName: "",
         keyword: "",
-        order: "",
+        order: "1:desc",
         pageNo: 1,
         pageSize: 10,
         props: [],
@@ -134,18 +109,88 @@ export default {
   },
   computed: {
     ...mapState('Search', ['searchInfo']),
-    ...mapGetters('Search', ['goodsList'])
+    ...mapGetters('Search', ['goodsList']),
+    isAsc() {
+      return this.searchParams.order.includes('asc')
+    }
   },
   components: {
     SearchSelector
   },
   methods: {
     getDate() {
-      this.$store.dispatch('Search/getSearchInfo',this.searchParams)
+      this.$store.dispatch('Search/getSearchInfo', this.searchParams)
+    },
+    removeCategoryName() {
+      this.searchParams.categoryName = undefined;
+      this.searchParams.category1Id = undefined;
+      this.searchParams.category2Id = undefined;
+      this.searchParams.category3Id = undefined;
+      this.getDate()
+      this.$router.push({ name: 'search', params: this.$route.params })
+    },
+    removekeyword() {
+      this.searchParams.keyword = undefined;
+      this.getDate()
+      //通知header组件清除关键字
+      this.$bus.$emit('clearKeyword')
+      //路由跳转
+      this.$router.push({ name: 'search', query: this.$route.query })
+    },
+    removetrademark() {
+      this.searchParams.trademark = '';
+      this.getDate();
+    },
+    removeAttr(index) {
+      this.searchParams.props.splice(index, 1)
+      this.getDate()
+    },
+    //改变顺序
+    changeOrder(index) {
+      let orderFlag = this.searchParams.order.split(":")[0];
+      let orderSort = this.searchParams.order.split(":")[1];
+      let newOrder = '';
+      if (index === orderFlag) {
+        newOrder = `${orderFlag}:${orderSort == 'desc' ? 'asc' : 'desc'}`
+      } else {
+        newOrder = `${orderFlag == '1' ? '2' : '1'}:${orderSort}`
+      }
+      this.searchParams.order = newOrder
+      this.getDate()
+    },
+    //改变页数
+    getPageNo(pageNo) {
+      console.log(pageNo);
+      this.searchParams.pageNo = pageNo
+     this.getDate()
+    },
+    //子级回调获取trademark信息
+    trademarkInfo(trademark) {
+      this.searchParams.trademark = trademark.tmId + ':' + trademark.tmName
+      console.log(this.searchParams.trademark);
+      this.getDate()
+    },
+    //子级回调获取props信息
+    propsInfo(props) {
+      let p = (props.join(":"));
+      console.log(p);
+      if (!this.searchParams.props.includes(p)) {
+        this.searchParams.props.push(p)
+        this.getDate()
+      }
     }
   },
-  beforeMount(){
-   Object.assign(this.searchParams,this.$route.query,this.$route.params)
+  watch: {
+    $route(newV, oldV) {
+      Object.assign(this.searchParams, this.$route.query, this.$route.params)
+      this.getDate()
+      this.searchParams.category1Id = undefined;
+      this.searchParams.category2Id = undefined;
+      this.searchParams.category3Id = undefined;
+    }
+  },
+  beforeMount() {
+    Object.assign(this.searchParams, this.$route.query, this.$route.params)
   },
   mounted() {
     this.getDate()
@@ -266,6 +311,11 @@ export default {
                 a {
                   background: #e1251b;
                   color: #fff;
+
+                  span {
+                    font-size: 12px;
+
+                  }
                 }
               }
             }
@@ -313,9 +363,9 @@ export default {
                 strong {
                   font-weight: 700;
 
-                  i {
-                    // margin-left: -5px;
-                  }
+                  // i {
+                  //   margin-left: -5px;
+                  // }
                 }
               }
 
@@ -398,92 +448,7 @@ export default {
         }
       }
 
-      .page {
-        width: 733px;
-        height: 66px;
-        overflow: hidden;
-        float: right;
 
-        .sui-pagination {
-          margin: 18px 0;
-
-          ul {
-            margin-left: 0;
-            margin-bottom: 0;
-            vertical-align: middle;
-            width: 490px;
-            float: left;
-
-            li {
-              line-height: 18px;
-              display: inline-block;
-
-              a {
-                position: relative;
-                float: left;
-                line-height: 18px;
-                text-decoration: none;
-                background-color: #fff;
-                border: 1px solid #e0e9ee;
-                margin-left: -1px;
-                font-size: 14px;
-                padding: 9px 18px;
-                color: #333;
-              }
-
-              &.active {
-                a {
-                  background-color: #fff;
-                  color: #e1251b;
-                  border-color: #fff;
-                  cursor: default;
-                }
-              }
-
-              &.prev {
-                a {
-                  background-color: #fafafa;
-                }
-              }
-
-              &.disabled {
-                a {
-                  color: #999;
-                  cursor: default;
-                }
-              }
-
-              &.dotted {
-                span {
-                  margin-left: -1px;
-                  position: relative;
-                  float: left;
-                  line-height: 18px;
-                  text-decoration: none;
-                  background-color: #fff;
-                  font-size: 14px;
-                  border: 0;
-                  padding: 9px 18px;
-                  color: #333;
-                }
-              }
-
-              &.next {
-                a {
-                  background-color: #fafafa;
-                }
-              }
-            }
-          }
-
-          div {
-            color: #333;
-            font-size: 14px;
-            float: right;
-            width: 241px;
-          }
-        }
-      }
     }
   }
 }

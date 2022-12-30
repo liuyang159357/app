@@ -4,7 +4,8 @@
       <div class="fl key brand">品牌</div>
       <div class="value logos">
         <ul class="logo-list">
-          <li v-for="item in trademarkList" :key="item.tmId">{{ item.tmName }}</li>
+          <li v-for="item in trademarkList" :key="item.tmId" @click="tradeMarkHandler(item)">{{ item.tmName }}
+          </li>
         </ul>
       </div>
       <div class="ext">
@@ -16,7 +17,8 @@
       <div class="fl key">{{ item.attrName }}</div>
       <div class="fl value">
         <ul class="type-list">
-          <li v-for="value, index in item.attrValueList" :key="index">
+          <li v-for="value, index in item.attrValueList" :key="index"
+            @click="attrInfo(item.attrId, value, item.attrName)">
             <a>{{ value }}</a>
           </li>
         </ul>
@@ -32,6 +34,14 @@ export default {
   name: 'SearchSelector',
   computed: {
     ...mapGetters('Search', ['trademarkList', 'attrsList'])
+  },
+  methods: {
+    tradeMarkHandler(trademark) {
+      this.$emit('trademarkInfo', trademark)
+    },
+    attrInfo(...attrInfo) {
+      this.$emit('propsInfo',attrInfo)
+    }
   }
 }
 </script>
@@ -91,6 +101,11 @@ export default {
           color: #e1251b;
           font-style: italic;
           font-size: 14px;
+          cursor: pointer;
+
+          &:hover {
+            opacity: 0.5;
+          }
 
           img {
             max-width: 100%;
@@ -105,6 +120,13 @@ export default {
           display: block;
           margin-right: 30px;
           line-height: 26px;
+          cursor: pointer;
+
+          &:hover {
+            a {
+              color: red;
+            }
+          }
 
           a {
             text-decoration: none;
