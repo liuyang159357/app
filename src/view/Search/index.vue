@@ -54,7 +54,9 @@
               <li class="yui3-u-1-5" v-for="item in goodsList" :key="item.id">
                 <div class="list-wrap">
                   <div class="p-img">
-                    <a href="item.html" target="_blank"><img :src="item.defaultImg" /></a>
+                    <router-link :to="{path:'/detail/'+item.id}">
+                      <img :src="item.defaultImg" />
+                    </router-link>
                   </div>
                   <div class="price">
                     <strong>
@@ -162,7 +164,7 @@ export default {
     getPageNo(pageNo) {
       console.log(pageNo);
       this.searchParams.pageNo = pageNo
-     this.getDate()
+      this.getDate()
     },
     //子级回调获取trademark信息
     trademarkInfo(trademark) {

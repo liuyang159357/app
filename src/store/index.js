@@ -4,6 +4,7 @@ Vue.use(Vuex)
 
 import Home from './modules/home'
 import Search from './modules/search'
+import Detail from './modules/detail'
 export default new Vuex.Store({
     state: {
        
@@ -17,6 +18,7 @@ export default new Vuex.Store({
     },
     modules:{
         Home,
-        Search
+        Search,
+        Detail
     }
 })

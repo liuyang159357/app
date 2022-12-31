@@ -44,9 +44,6 @@ export default {
             return { start, end }
         },
     },
-    mounted() {
-        console.log(123);
-    }
 }
 </script>
 

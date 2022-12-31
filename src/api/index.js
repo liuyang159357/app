@@ -19,3 +19,9 @@ export const reqSearchInfo=(params)=>requests({
     method:'post',
     data:params
 })
+
+//获取产品信息
+export const reqGoodsInfo=(id)=>requests({
+    url:`/item/${id}`,
+    method:'get',
+})
