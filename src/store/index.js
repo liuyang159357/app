@@ -5,6 +5,8 @@ Vue.use(Vuex)
 import Home from './modules/home'
 import Search from './modules/search'
 import Detail from './modules/detail'
+import ShopCart from './modules/shopcart'
+import User from './modules/user'
 export default new Vuex.Store({
     state: {
        
@@ -19,6 +21,8 @@ export default new Vuex.Store({
     modules:{
         Home,
         Search,
-        Detail
+        Detail,
+        ShopCart,
+        User
     }
 })

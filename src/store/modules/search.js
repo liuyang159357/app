@@ -25,7 +25,6 @@ export default {
     actions: {
         async getSearchInfo(store, params = {}) {
             let result = await reqSearchInfo(params);
-            console.log(result);
             if (result.code == 200) {
                 store.commit('GETSEARCHINFO', result.data)
             }

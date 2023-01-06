@@ -1,32 +1,54 @@
 <template>
   <div class="spec-preview">
     <img :src="imgUrlObj.imgUrl" />
-    <div class="event"></div>
+    <div class="event" @mousemove="handler" ref="event"></div>
     <div class="big">
-      <img :src="imgUrlObj.imgUrl" />
+      <img :src="imgUrlObj.imgUrl" ref="bigimg" />
     </div>
-    <div class="mask"></div>
+    <div class="mask" ref="mask"></div>
   </div>
 </template>
 
 <script>
+import throttle from 'lodash/throttle';
 export default {
   name: "ZooM",
   props: ['skuImageList'],
-  computed: {
-    imgUrlObj() {
-      return this.skuImageList[0] || {}
+  data() {
+    return {
+      index: 0
     }
   },
-  mounted(){
-   
+  computed: {
+    imgUrlObj() {
+      return this.skuImageList[this.index] || {}
+    }
+  },
+  methods: {
+    handler:throttle(function(e) {
+      let mask = this.$refs.mask
+      let bigimg = this.$refs.bigimg
+      let left = e.offsetX - mask.offsetWidth / 2 < 0 ? 0 : (e.offsetX - mask.offsetWidth / 2 > mask.offsetWidth ? mask.offsetWidth : e.offsetX - mask.offsetWidth / 2)
+      let top = e.offsetY - mask.offsetHeight / 2 < 0 ? 0 : (e.offsetY - mask.offsetHeight / 2 > mask.offsetHeight ? mask.offsetHeight : e.offsetY - mask.offsetHeight / 2)
+      mask.style.left = left + 'px';
+      mask.style.top = top + 'px';
+      bigimg.style.left = -2 * left + 'px';
+      bigimg.style.top = -2 * top + 'px'
+    }, 50)
+  },
+  mounted() {
+    this.$bus.$on('changeIndex', (current) => {
+      this.index = current
+    })
   }
+
 }
 </script>
 
 <style lang="less">
 .spec-preview {
   position: relative;
+  left: 12px;
   width: 400px;
   height: 400px;
   border: 1px solid #ccc;

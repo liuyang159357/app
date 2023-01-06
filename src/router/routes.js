@@ -33,6 +33,16 @@ import Home from '@/view/Home'
     path:'/detail/:id',
     component:()=>import('@/view/Detail'),
     name:'detail'
+   },
+   {
+      path:'/addcartsuccess',
+      component:()=>import('@/view/AddCartSuccess'),
+      name:'addcartsuccess'
+   },
+   {
+      path:'/shopcart',
+      component:()=>import('@/view/ShopCart'),
+      name:'shopcart'
    }
 
 ]

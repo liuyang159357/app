@@ -42,7 +42,7 @@ export default {
                     disableOnInteraction: false,
                 },//可选选项，自动滑动
                 loop: true, // 循环模式选项
-
+                 
                 // 如果需要分页器
                 pagination: {
                     el: '.swiper-pagination',

@@ -65,18 +65,18 @@
               <dl v-for="item in spuSaleAttrList" :key="item.id">
                 <dt class="title">选择{{ item.saleAttrName }}</dt>
                 <dd v-for="value in item.spuSaleAttrValueList" :key="value.id"
-                  :class="{active:value.isChecked=='1'}"
-                  @click="changeActive(value.id,item.spuSaleAttrValueList)">{{value.saleAttrValueName}}</dd>
+                  :class="{ active: value.isChecked == '1' }"
+                  @click="changeActive(value.id, item.spuSaleAttrValueList)">{{ value.saleAttrValueName }}</dd>
               </dl>
             </div>
             <div class="cartWrap">
               <div class="controls">
-                <input autocomplete="off" class="itxt">
-                <a href="javascript:" class="plus">+</a>
-                <a href="javascript:" class="mins">-</a>
+                <input type="number" @input="changeSkuNum" v-model="skuNum" class="itxt">
+                <a href="javascript:" class="plus" @click="changeNum('+')">+</a>
+                <a href="javascript:" class="mins" @click="changeNum('-')">-</a>
               </div>
               <div class="add">
-                <a href="javascript:">加入购物车</a>
+                <a href="javascript:" @click="addShopCar">加入购物车</a>
               </div>
             </div>
           </div>
@@ -329,12 +329,12 @@
 <script>
 import ImageList from './ImageList/ImageList'
 import Zoom from './Zoom/Zoom'
-import { mapState, mapGetters } from 'vuex'
+import { mapState, mapGetters, mapActions } from 'vuex'
 export default {
   name: 'DetaiL',
   data() {
     return {
-     
+      skuNum: 1
     }
   },
   components: {
@@ -349,19 +349,47 @@ export default {
     },
   },
   methods: {
-    changeActive(current,all){
-      console.log(current,all);
-      for(let i of all){
-        if(i.id==current){
-          i.isChecked='1'
-        }else{
-          i.isChecked='0'
+    ...mapActions('Detail', ['addOrUpdateShopCar']),
+    changeActive(current, all) {
+      for (let i of all) {
+        if (i.id == current) {
+          i.isChecked = '1'
+        } else {
+          i.isChecked = '0'
         }
+      }
+    },
+    //点击加减按钮
+    changeNum(sign) {
+      if (sign == '+') {
+        this.skuNum++
+      } else {
+        this.skuNum = --this.skuNum < 1 ? 1 : this.skuNum
+      }
+    },
+    // 输入购买数量
+    changeSkuNum(e) {
+      let value = e.target.value
+      if (value < 1) {
+        this.skuNum = 1
+      } else {
+        this.skuNum = parseInt(this.skuNum)
+      }
+    },
+    //添加购物车
+    async addShopCar() {
+      let params = { skuId: this.$route.params.id, skuNum: this.skuNum }
+      // this.$store.dispatch('Detail/addOrUpdateShopCar',params)
+      let result = await this.addOrUpdateShopCar(params)
+      if (result.ok) {
+        sessionStorage.setItem('skuInfo', JSON.stringify(this.skuInfo))
+        this.$router.push({ name: 'addcartsuccess', query: { skuNum: this.skuNum } })
       }
     }
   },
   created() {
     this.$store.dispatch('Detail/getGoodsInfo', this.$route.params.id)
+
   }
 }
 </script>
@@ -521,9 +549,11 @@ export default {
                 border-right: 1px solid #bbb;
                 border-bottom: 1px solid #bbb;
                 border-left: 1px solid #eee;
-                &:hover{
+
+                &:hover {
                   cursor: pointer;
                 }
+
                 &.active {
                   color: green;
                   border: 1px solid green;
@@ -547,6 +577,7 @@ export default {
                 float: left;
                 border-right: 0;
                 text-align: center;
+                outline: none;
               }
 
               .plus,
@@ -864,5 +895,15 @@ export default {
       }
     }
   }
+}
+
+/*添加css样式*/
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
 }
 </style>

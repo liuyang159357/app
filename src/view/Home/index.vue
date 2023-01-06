@@ -7,7 +7,6 @@
     <Like></Like>
     <Floor :item="item" v-for="item in floorList" :key="item.id"></Floor>
     <Brand></Brand>
-
   </div>
 </template>
 
@@ -33,7 +32,9 @@ export default {
     ...mapState('Home',['floorList'])
   },
   methods: {
-
+    log(){
+      console.log(123);
+    }
   },
   mounted(){
     this.$store.dispatch('Home/getFloorList')
