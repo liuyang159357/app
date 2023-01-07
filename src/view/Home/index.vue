@@ -38,6 +38,8 @@ export default {
   },
   mounted(){
     this.$store.dispatch('Home/getFloorList')
+   
+    this.$store.dispatch('User/getUserInfo')
   }
 }
 </script>

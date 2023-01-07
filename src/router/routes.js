@@ -16,13 +16,13 @@ import Home from '@/view/Home'
     path:'/login',
     component:()=>import('@/view/Login'),
     name:'login',
-    meta:{footerShow:false}
+    meta:{footerNoShow:true}
    },
    {
     path:'/register',
     component:()=>import('@/view/Register'),
     name:'register',
-    meta:{footerShow:false}
+    meta:{footerNoShow:true}
    },
    {
     path:'/search/:keyword?',

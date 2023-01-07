@@ -69,6 +69,7 @@ export default {
     }
   },
   methods: {
+    //获取验证码
     async getCode() {
       let reg = /^(?:(?:\+|00)86)?1\d{10}$/
       if (reg.test(this.phone)) {
@@ -79,6 +80,7 @@ export default {
       }
 
     },
+    //判断输入是否正确
     changeValue(e) {
       let reg = {
         tel: /^(?:(?:\+|00)86)?1\d{10}$/,
@@ -117,6 +119,20 @@ export default {
           }
           break;
       }
+    },
+    //注册
+    register() {
+      const { phone, code, password } = this
+      phone && code && password == this.password1 && this.$store.dispatch('User/userRegister', { phone, code, password }) .then((result) => {
+        if(result.code==200){
+          alert('注册成功')
+          this.$router.push({
+            name:'login'
+          })
+        }
+      }).catch((err) => {
+        console.log(err);
+      })
     }
   }
 }

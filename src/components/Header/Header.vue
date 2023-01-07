@@ -6,10 +6,14 @@
                 <div class="container">
                     <div class="loginList">
                         <p>尚品汇欢迎您！</p>
-                        <p>
+                        <p v-if="!userName">
                             <span>请</span>
-                            <a href="###">登录</a>
-                            <a href="###" class="register">免费注册</a>
+                            <router-link to="/login">登录</router-link>
+                            <router-link to="/register" class="register">免费注册</router-link>
+                        </p>
+                        <p v-else>
+                            <a> {{ userName }}</a>
+                            <a @click="logout" class="register">退出登录</a>
                         </p>
                     </div>
                     <div class="typeList">
@@ -53,6 +57,11 @@ export default {
             keyword: ''
         }
     },
+    computed: {
+        userName() {
+            return this.$store.state.User.userInfo.name
+        }
+    },
     methods: {
         goSearch() {
             if (this.keyword.trim()) {
@@ -65,13 +74,18 @@ export default {
                         query: this.$route.query ? this.$route.query : undefined
                     })
             }
-
+        },
+       async logout(){
+           let result=await this.$store.dispatch('User/logout')
+           if(result.code==200){
+            console.log(123);
+            this.$router.push({name:'home'})
+           }
+           
         }
     },
-    mounted(){
-        this.$bus.$on('clearKeyword',()=>{
-            this.keyword=''
-        })
+    mounted() {
+        this.$store.dispatch('User/getUserInfo')
     }
 }
 </script>
@@ -94,6 +108,14 @@ export default {
                 p {
                     float: left;
                     margin-right: 10px;
+
+                    a {
+                        cursor: pointer;
+
+                        &:hover {
+                            color: red;
+                        }
+                    }
 
                     .register {
                         border-left: 1px solid #b3aeae;
