@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from "vue-router";
+import store from '@/store'
 //使用vuerouter
 Vue.use(VueRouter)
 //重写push方法
@@ -26,4 +27,32 @@ const router = new VueRouter({
     }
 })
 
+
+router.beforeEach(async (to, from, next) => {
+    let token = store.state.User.token;
+    let userInfo = store.state.User.userInfo
+    if (token) {
+        if (to.name == 'login' || to.name == 'register') {
+            //登录之后不能进入登录页面
+            next('/')
+        } else {
+            //如果有用户信息
+            if (userInfo) {
+                next()
+            } else {
+                let result = await store.dispatch('User/getUserInfo')
+                if (!result) {
+                    // token过期了
+                    store.dispatch('User/logout')
+                } else {
+                    next()
+                }
+            }
+        }
+    } else {
+        next()
+    }
+
+
+})
 export default router

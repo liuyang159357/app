@@ -55,23 +55,39 @@ export const reqRegisterCode = (phone) => requests({
 
 //注册
 export const reqUserRegister = (data) => requests({
-    url:'/user/passport/register',
+    url: '/user/passport/register',
     data,
-    method:'post'
+    method: 'post'
 })
 
 //登录
 export const reqUserLogin = (data) => requests({
-    url:'/user/passport/login',
+    url: '/user/passport/login',
     data,
-    method:'post'
+    method: 'post'
 })
 
 //获取用户信息
-export const reqUserInfo = ()=>requests ({
-    url:'/user/passport/auth/getUserInfo',
-    method:'get'
+export const reqUserInfo = () => requests({
+    url: '/user/passport/auth/getUserInfo',
+    method: 'get'
 })
 
 //退出登录
-export const reqLogout=()=> requests.get('/user/passport/logout')
+export const reqLogout = () => requests.get('/user/passport/logout')
+
+//获取用户地址信息
+export const reqAddress = () => requests.get('/user/userAddress/auth/findUserAddressList')
+
+//获取商品清单
+export const reqOrderInfo = () => requests.get('/order/auth/trade')
+
+//提交订单
+export const reqSubmitOrder = (tradeNo, data) => requests({
+    url: `/order/auth/submitOrder?tradeNo=${tradeNo}`,
+    data,
+    method: 'post'
+})
+
+//获取订单支付信息
+export const reqPayInfo =(orderId)=>requests.get(`/payment/weixin/createNative/${orderId}`)

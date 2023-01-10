@@ -43,6 +43,21 @@ import Home from '@/view/Home'
       path:'/shopcart',
       component:()=>import('@/view/ShopCart'),
       name:'shopcart'
+   },
+   {
+      path:'/trade',
+      component:()=>import('@/view/Trade'),
+      name:'trade'
+   },
+   {
+      path:'/pay',
+      component:()=>import('@/view/Pay'),
+      name:'pay'
+   },
+   {
+      path:'/paysuccess',
+      component:()=>import('@/view/PaySuccess'),
+      name:'paysuccess'
    }
 
 ]

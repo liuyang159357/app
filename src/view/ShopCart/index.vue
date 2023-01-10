@@ -59,7 +59,7 @@
           <i class="summoney">{{ totalPrice }}</i>
         </div>
         <div class="sumbtn">
-          <a class="sum-btn" href="###" target="_blank">结算</a>
+          <router-link class="sum-btn" to="/trade">结算</router-link>
 
         </div>
       </div>
@@ -384,6 +384,7 @@ export default {
         float: right;
 
         a {
+          cursor: pointer;
           display: block;
           position: relative;
           width: 96px;
@@ -395,6 +396,7 @@ export default {
           font-family: "Microsoft YaHei";
           background: #e1251b;
           overflow: hidden;
+          text-decoration: none;
         }
       }
     }

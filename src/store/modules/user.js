@@ -52,13 +52,11 @@ export default {
       let result = await reqUserInfo()
       if (result.code == 200) {
         store.commit('GETUSERINFO', result.data)
-        console.log(result.data);
         return result
       }
     },
     async logout(store) {
       let result = await reqLogout()
-      console.log(result);
       if (result.code == 200) {
         store.commit('LOGOUT')
         removeToken()

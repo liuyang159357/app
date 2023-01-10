@@ -78,14 +78,14 @@ export default {
        async logout(){
            let result=await this.$store.dispatch('User/logout')
            if(result.code==200){
-            console.log(123);
             this.$router.push({name:'home'})
            }
            
         }
     },
     mounted() {
-        this.$store.dispatch('User/getUserInfo')
+    // this.$store.dispatch('User/getUserInfo')
+      
     }
 }
 </script>

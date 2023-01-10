@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-  <Header></Header>
-  <router-view></router-view>
-  <Footer v-show="$route.meta.footerNoShow? false:true"></Footer>
+    <Header></Header>
+    <router-view></router-view>
+    <Footer v-show="$route.meta.footerNoShow ? false : true"></Footer>
   </div>
 </template>
 
@@ -10,11 +10,11 @@
 
 import Header from './components/Header/Header.vue'
 import Footer from './components/Footer/Footer.vue'
- export default {
+export default {
   name: 'App',
   components: {
-  Header,
-  Footer
+    Header,
+    Footer
   },
   mounted() {
     this.$store.dispatch('Home/categoryList')
@@ -23,9 +23,15 @@ import Footer from './components/Footer/Footer.vue'
 </script>
 
 <style lang="less" >
-#nprogress .bar{
+// body {
+//   overflow: hidden;
+//   padding-right: 0 !important;
+// }
+
+#nprogress .bar {
   background-color: red !important;
 }
+
 /*添加css样式*/
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
@@ -34,5 +40,9 @@ input::-webkit-inner-spin-button {
 
 input[type="number"] {
   -moz-appearance: textfield;
+}
+
+a {
+  cursor: pointer
 }
 </style>
