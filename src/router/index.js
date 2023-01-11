@@ -50,7 +50,13 @@ router.beforeEach(async (to, from, next) => {
             }
         }
     } else {
-        next()
+        let names = ['pay', 'paysuccess', 'center','shopcart']
+        if (names.includes(to.name)) {
+           next({name:'login',query:{redirect:to.name}})
+        } else {
+            next()
+        }
+
     }
 
 

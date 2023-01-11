@@ -8,7 +8,7 @@
         </h4>
         <div class="paymark">
           <span class="fl">请您在提交订单<em class="orange time">4小时</em>之内完成支付，超时订单会自动取消。订单号：<em>{{ orderId }}</em></span>
-          <span class="fr"><em class="lead">应付金额：</em><em class="orange money">￥{{payInfo.totalFee}}</em></span>
+          <span class="fr"><em class="lead">应付金额：</em><em class="orange money">￥{{ payInfo.totalFee }}</em></span>
         </div>
       </div>
       <div class="checkout-info">
@@ -82,11 +82,14 @@
 </template>
 
 <script>
+import QRcode from 'qrcode'
 export default {
   name: 'PaY',
-  data(){
-    return{
-      payInfo:{}
+  data() {
+    return {
+      payInfo: {},
+      code: '',
+      timer: null
     }
   },
   computed: {
@@ -94,30 +97,64 @@ export default {
       return this.$route.query.orderId
     }
   },
-  methods:{
-    open() {
-        this.$alert('<strong>这是 <i>HTML</i> 片段</strong>', 'HTML 片段', {
-          dangerouslyUseHTMLString: true,
-          lockScroll:false,
-          center:true,
-          showCancelButton:true,
-          cancelButtonText:'支付遇见问题',
-          confirmButtonText:'支付成功',
-          showClose:false
-        });
-      }
+  methods: {
+    async open() {
+      let result = await QRcode.toDataURL(this.payInfo.codeUrl)
+      this.$alert(`<img src="${result}" alt="" />`, 'HTML 片段', {
+        dangerouslyUseHTMLString: true,
+        lockScroll: false,
+        center: true,
+        showCancelButton: true,
+        cancelButtonText: '支付遇见问题',
+        confirmButtonText: '支付成功',
+        showClose: false,
+        beforeClose: (action, instance, done) => {
+          if (action == 'cancel') {
+            alert('请联系管理员')
+            clearInterval(this.timer)
+            this.timer = null
+            done()
+          } else {
+            if (!this.timer) {
+              this.timer = setInterval(async () => {
+                let result = await this.$API.reqPayStatu(this.orderId)
+                console.log(result);
+                if (result.code == 205) {
+                  this.code = result.code
+                  clearInterval(this.timer)
+                  this.timer = null
+                  this.$msgbox.close()
+                  this.$router.push({ name: 'paysuccess' })
+                }
+              }, 1000)
+            }
+            // if (this.code = 200) {
+            //   clearInterval(this.timer)
+            //   this.timer = null
+            //   this.$router.push({name:'paysuccess'})
+            // }
+          }
+        }
+      }).then(() => {
+
+      }).catch(() => {
+
+      })
+
+    },
   },
   created() {
     this.$API.reqPayInfo(this.orderId).then((result) => {
       console.log(result);
       if (result.code == 200) {
-        this.payInfo=result.data
+        this.payInfo = result.data
       }
     }).catch((err) => {
       console.log(err);
     })
 
-  }
+  },
+ 
 }
 </script>
 

@@ -77,16 +77,18 @@ export default {
   methods: {
     async login() {
       const { phone, password } = this
-     phone && password && await this.$store.dispatch('User/userLogin', { phone, password }).then((result) => {
-      if(result.code==200){
-        this.$router.push({name:'home'})
+      phone && password && await this.$store.dispatch('User/userLogin', { phone, password }).then((result) => {
+        if (result.code == 200) {
+          let name = this.$route.query.redirect || 'home'
+          console.log(name);
+          this.$router.push({ name: name })
 
-      }
-     }).catch((err) => {
-      alert(err)
-     })
-   
-     
+        }
+      }).catch((err) => {
+        alert(err)
+      })
+
+
     }
   }
 }

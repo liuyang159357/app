@@ -11,10 +11,17 @@ Vue.component(CarouseL.name,CarouseL)
 import PaginatioN from '@/components/Pagination'
 Vue.component(PaginatioN.name,PaginatioN)
 //引入elemrent
-import { Button,MessageBox } from 'element-ui';
+import { Button,MessageBox,Message } from 'element-ui';
 Vue.component(Button.name,Button)
 Vue.prototype.$msgbox = MessageBox;
+Vue.prototype.$message = Message;
 Vue.prototype.$alert = MessageBox.alert;
+//引入懒加载插件
+import VueLazyload from 'vue-lazyload'
+import Ji from '@/assets/images/ji.gif'
+Vue.use(VueLazyload,{
+  loading:Ji ,
+})
 //引入路由
 import router from '@/router'
 
@@ -32,7 +39,8 @@ import 'swiper/css/swiper.css'
 
 //统一接受api文件夹里面全部的请求
 import *as API from '@/api'
-
+import myplugins from '@/plugins/myplugins'
+Vue.use(myplugins)
 new Vue({
   beforeCreate(){
     Vue.prototype.$bus=this

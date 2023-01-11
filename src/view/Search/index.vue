@@ -55,7 +55,7 @@
                 <div class="list-wrap">
                   <div class="p-img">
                     <router-link :to="{path:'/detail/'+item.id}">
-                      <img :src="item.defaultImg" />
+                      <img v-lazy="item.defaultImg" />
                     </router-link>
                   </div>
                   <div class="price">
@@ -162,7 +162,6 @@ export default {
     },
     //改变页数
     getPageNo(pageNo) {
-      console.log(pageNo);
       this.searchParams.pageNo = pageNo
       this.getDate()
     },
@@ -196,7 +195,8 @@ export default {
   },
   mounted() {
     this.getDate()
-  }
+  },
+  
 }
 </script>
 
