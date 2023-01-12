@@ -35,7 +35,7 @@ export default {
       if (result.code == 200) {
         return result
       } else {
-        return Promise.reject(new Error('fail'))
+        return result
       }
     },
     async userLogin(store, data) {

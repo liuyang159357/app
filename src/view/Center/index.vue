@@ -78,7 +78,6 @@ export default {
   .container {
     margin: 0 auto;
     width: 1200px;
-
     .order-body {
       padding: 10px;
       color: #333;

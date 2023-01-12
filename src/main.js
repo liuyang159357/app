@@ -39,8 +39,9 @@ import 'swiper/css/swiper.css'
 
 //统一接受api文件夹里面全部的请求
 import *as API from '@/api'
-import myplugins from '@/plugins/myplugins'
-Vue.use(myplugins)
+
+import '@/plugins/validate'
+
 new Vue({
   beforeCreate(){
     Vue.prototype.$bus=this
