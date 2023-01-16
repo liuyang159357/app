@@ -59,32 +59,11 @@ export default {
     name: 'FlooR',
     props: ['item'],
     methods: {
-        // floorSwiper() {
-        //     new Swiper(this.$refs.floor1Swiper, {
-        //         autoplay: {
-        //             delay: 3000,
-        //             stopOnLastSlide: false,
-        //             disableOnInteraction: false,
-        //         },//可选选项，自动滑动
-        //         loop: true, // 循环模式选项
-
-        //         // 如果需要分页器
-        //         pagination: {
-        //             el: '.swiper-pagination',
-        //             clickable: true,
-        //         },
-
-        //         // 如果需要前进后退按钮
-        //         navigation: {
-        //             nextEl: '.swiper-button-next',
-        //             prevEl: '.swiper-button-prev',
-        //         },
-        //     })
-        // }
+       
     },
   
     mounted() {
-       
+      
     }
 }
 </script>
