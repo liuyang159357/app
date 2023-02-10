@@ -7,7 +7,7 @@
     <Like></Like>
     <Floor :item="item" v-for="item in floorList" :key="item.id"></Floor>
     <Brand></Brand>
-    <h2>爸爸有{{ money }}</h2>
+    <!-- <h2>爸爸有{{ money }}</h2>
     <button @click="borrowAll(200)">全借200</button>
 
     <Son :data="money">
@@ -15,10 +15,10 @@
         <h2>header</h2>
       </template>
       <template slot="footer" slot-scope="{data}">
-        <h2 :style="{color:'red'}">{{data}}</h2>
+        <h2 :style="{color:'red'}">{{data.money}}</h2>
       </template>
     </Son>
-    <Daughter></Daughter>
+    <Daughter></Daughter> -->
   </div>
 </template>
 

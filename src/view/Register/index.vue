@@ -22,9 +22,10 @@
       </div>
       <div class="content">
         <label>登录密码:</label>
-        <input type="password" placeholder="请输入你的密码" v-model="password" name="password"
+        <input type="password"  placeholder="请输入你的密码" v-model="password" name="password"
           v-validate="{ required: true, regex: /(?=.*[a-z_])(?=.*\d)[\S]{8,}/i }"
-          :class="{ invalid: errors.has('phone') }" />
+          :class="{ invalid: errors.has('phone') ,password }" @input="changeValue"/>
+          <span v-show="password"  style="color:greenyellow;padding-left: 20px;">"8位以上包含字母数字"</span>
         <span class="error-msg">{{ errors.first("password") }}</span>
       </div>
       <div class="content">
@@ -52,11 +53,11 @@
         <li>联系客服</li>
         <li>商家入驻</li>
         <li>营销中心</li>
-        <li>手机尚品汇</li>
+        <li>手机京东</li>
         <li>销售联盟</li>
-        <li>尚品汇社区</li>
+        <li>京东社区</li>
       </ul>
-      <div class="address">地址：北京市昌平区宏福科技园综合楼6层</div>
+      <div class="address">地址：山东菏泽曹县</div>
       <div class="beian">京ICP备19006430号
       </div>
     </div>
@@ -113,9 +114,10 @@ export default {
           break;
         case 'password':
           if (reg.password.test(e.target.value)) {
+            console.log(e.target.value);
             e.target.nextSibling.style.display = 'none'
           } else {
-            e.target.nextSibling.style.display = 'block'
+            e.target.nextSibling.style.display = 'inlineblock'
           }
           break;
         case 'password1':

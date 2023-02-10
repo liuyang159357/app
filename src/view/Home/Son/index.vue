@@ -3,7 +3,7 @@
     <h3>Son有{{money}}</h3>
     <slot name="header"></slot>
     <button @click="giveMoney(100)">借Son100</button>
-    <slot name="footer" :data="{money,data}"></slot>
+    <slot name="footer" :data="{money}"></slot>
   </div>
 </template>
 
@@ -19,7 +19,7 @@ data() {
 },
 props:['data'],
 mounted(){
-  console.log(this);
+ 
 }
 }
 </script>
